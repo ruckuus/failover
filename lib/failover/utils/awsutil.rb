@@ -95,8 +95,31 @@ module Failover
       resp
     end
 
-    alias get_active_instance_by_eip describe_address
-    alias get_active_instance_by_elb describe_loadbalancer
-  end
+    def get_active_ec2_instance_by_elb(loadbalancer_name)
+      resp = self.describe_loadbalancer(@loadbalancer_name)
 
+      ids = nil
+      resp.data.load_balancer_descriptions.each do |el|
+        if el.instances.count > MAX_ACTIVE_INSTANCE
+          return 'Unsupported'
+        else
+          return el.instances[0].instance_id if el.instances
+        end
+      end
+
+      ids
+    end
+
+    def get_active_ec2_instance_by_eip(public_ip)
+      resp = self.describe_address(public_ip)
+
+      ids = nil
+      ids = resp.data.addresses[0].instance_id if resp.data.addresses[0].instance_id
+
+      ids
+    end
+
+    alias get_active_instance_by_eip get_active_ec2_instance_by_eip
+    alias get_active_instance_by_elb get_active_ec2_instance_by_elb
+  end
 end
