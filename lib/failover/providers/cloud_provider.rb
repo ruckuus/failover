@@ -5,10 +5,10 @@ module Failover
   # for all other Cloud provider class. You should not instantiate this class directly.
   class Provider::Cloud < Provider
 
-    attr_accessor :name
-    attr_accessor :status
-
     def get_active_instance
+    end
+
+    def get_candidate_instance
     end
   end
 end

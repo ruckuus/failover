@@ -1,5 +1,5 @@
 require_relative 'service_provider'
-require 'salt'
+require 'saltrb/service'
 
 module Failover
   class Provider::Service::Salt < Provider::Service

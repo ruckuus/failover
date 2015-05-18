@@ -1,14 +1,16 @@
+require 'aws-sdk'
+
 module Failover
   class Awsutil
     def initialize(config)
       @elb = Aws::ElasticLoadBalancing::Client.new(
-        region: config.get_region,
+        region: config.region,
         access_key_id: config.get_access_key_id,
         secret_access_key: config.get_secret_access_key,
       )
 
       @ec2 = Aws::EC2::Client.new(
-        region: config.get_region,
+        region: config.region,
         access_key_id: config.get_access_key_id,
         secret_access_key: config.get_secret_access_key,
       )
