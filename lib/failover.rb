@@ -22,9 +22,15 @@ module Failover
 
       if config.cloud_provider == 'aws'
         cloud = Failover::Provider::Cloud::Aws.new(config)
+      else
+        raise 'Currently only supports AWS Cloud.'
       end
 
-      service = Failover::Provider::Service::Salt.new(config)
+      if config.service_provider == 'salt'
+        service = Failover::Provider::Service::Salt.new(config)
+      else
+        raise 'Currently only supports Salt.'
+      end
 
       # Setup Worker
       @@cloud_worker = Failover::Worker::Cloud.new(cloud)
