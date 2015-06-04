@@ -6,6 +6,7 @@ module Failover
     attr_accessor :provider
     attr_accessor :status
     attr_accessor :score
+    attr_accessor :bucket # general purpose data holder
 
     # Parameter must be an instance of provider
     def initialize(provider)
@@ -18,6 +19,7 @@ module Failover
       @provider = provider
       @status = Hash.new
       @score = provider.config.get_scores
+      @bucket = Hash.new
     end
 
     def start

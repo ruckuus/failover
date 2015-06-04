@@ -10,5 +10,8 @@ module Failover
 
     def get_candidate_instance
     end
+
+    def failover
+    end
   end
 end

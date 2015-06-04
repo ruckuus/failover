@@ -3,16 +3,16 @@ require "failover/config"
 require "failover/worker"
 require 'failover/workers/cloud_worker'
 require 'failover/workers/service_worker'
+require 'failover/workers/dummy_worker'
 require "failover/provider"
+require 'failover/base/cloud_provider'
+require 'failover/base/service_provider'
 require 'failover/providers/aws_provider'
 require 'failover/providers/salt_provider'
-require 'failover/providers/cloud_provider'
-require 'failover/providers/service_provider'
 
 module Failover
   def self.Init(config_file)
     @@status = 0
-    @@health = Hash.new
     begin
       config = Config.new(config_file)
 
@@ -37,6 +37,9 @@ module Failover
 
       # Setup Service Provider
       @@service_worker = Failover::Worker::Service.new(service)
+
+      # Setup Decision Provider, dummy provider.
+      @@decision = Failover::Worker::Decision::Dummy.new(cloud)
     rescue Exception => e
       @@status = 1
       raise e
@@ -60,11 +63,9 @@ module Failover
     if self.status == 1
       raise 'Something wrong during Start'
     end
-
-    @@service_worker.stop
   end
 
   def self.Decide
-
+    @@decision.do_decide
   end
 end

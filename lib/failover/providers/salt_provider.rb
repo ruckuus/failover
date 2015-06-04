@@ -1,4 +1,4 @@
-require_relative 'service_provider'
+require_relative '../base/service_provider'
 require 'saltrb/service'
 
 module Failover
